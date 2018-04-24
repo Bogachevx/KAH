@@ -25,8 +25,10 @@ void loadSettings()
     if (!file.is_open())
     {
         std::cout << "Error opening settings file" << std::endl;
+        setupTrackbars();
         return;
     }
+
     file >> p1 >> p2 >> minRadius >> maxRadius >> MINY >> MAXY >> ENDLINE
             >> WORKING_DELTA >> GATE_DELTA >> kx;
     file.close();
