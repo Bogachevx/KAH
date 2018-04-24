@@ -20,7 +20,7 @@ cv::Point findPuck(cv::Mat &Frame, int param1, int param2, int minRadius, int ma
     ///DEBUG///
     int radius = cvRound(circles[0][2]);
     std::cout << "Radius: " << radius << endl;
-    circle(Frame, center, radius, Scalar(0,0,255), 10);
+    circle(Frame, center, radius, COLOR_RED, 10);
     ///END///
     return center;
 }

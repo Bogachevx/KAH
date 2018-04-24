@@ -35,7 +35,7 @@ cv::Point predictPosition(cv::Mat &Frame, std::vector<cv::Point> &Points, int fi
              lp = cp;
              cp = Point(newx, y_final);
              ///DEBUG///
-             line(Frame, Point(0, a*0 + b), Point(1000, a*1000 + b), Scalar(255,0,255), 2);
+             line(Frame, Point(0, a*0 + b), Point(Frame.cols, a*Frame.cols + b), COLOR_CYAN, 2);
              ///END///
              if (hitCount > 5)
              {

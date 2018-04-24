@@ -7,7 +7,7 @@ void drawPath(cv::Mat &Frame, std::vector<cv::Point> &path)
 
     for (uint8_t i = 0; i < path.size(); i++)
     {
-        drawMarker(Frame, path[i], Scalar(0,255,0), MARKER_STAR);
+        drawMarker(Frame, path[i], COLOR_WHITE, MARKER_STAR);
     }
 }
 
@@ -15,17 +15,22 @@ void drawPath(cv::Mat &Frame, std::vector<cv::Point> &path)
 void drawDebugLines(cv::Mat &Frame)
 {
     using namespace cv;
-    line(Frame, Point(0, MINY), Point(Frame.cols, MINY), Scalar(0,255,0), 2);
-    line(Frame, Point(0, MAXY), Point(Frame.cols, MAXY), Scalar(0,255,0), 2);
-    line(Frame, Point(ENDLINE, 0), Point(ENDLINE, Frame.rows), Scalar(0,255,0), 2);
-    line(Frame, Point(ENDLINE-WORKING_DELTA, 0), Point(ENDLINE-WORKING_DELTA, Frame.rows), Scalar(0,255,0), 2);
-    line(Frame, Point(0, Frame.rows/2 - GATE_DELTA), Point(Frame.cols, Frame.rows/2 - GATE_DELTA), Scalar(0,255,0), 2);
-    line(Frame, Point(0, Frame.rows/2 + GATE_DELTA), Point(Frame.cols, Frame.rows/2 + GATE_DELTA), Scalar(0,255,0), 2);
+    line(Frame, Point(0, MINY), Point(Frame.cols, MINY), COLOR_GREEN, 2);
+    line(Frame, Point(0, MAXY), Point(Frame.cols, MAXY), COLOR_GREEN, 2);
+    line(Frame, Point(ENDLINE, 0), Point(ENDLINE, Frame.rows), COLOR_GREEN, 2);
+    line(Frame, Point(ENDLINE-WORKING_DELTA, 0), Point(ENDLINE-WORKING_DELTA, Frame.rows), COLOR_BLUE, 2);
+    line(Frame, Point(0, Frame.rows/2 - GATE_DELTA), Point(Frame.cols, Frame.rows/2 - GATE_DELTA), COLOR_RED, 2);
+    line(Frame, Point(0, Frame.rows/2 + GATE_DELTA), Point(Frame.cols, Frame.rows/2 + GATE_DELTA), COLOR_RED, 2);
 }
 
 void setupWindow()
 {
     cvNamedWindow(WINDOW_NAME, CV_WINDOW_AUTOSIZE);
+    cvNamedWindow(TRACKBARS_NAME, CV_WINDOW_FREERATIO);
+}
+
+void setupTrackbars()
+{
     cvNamedWindow(TRACKBARS_NAME, CV_WINDOW_FREERATIO);
     cvCreateTrackbar("p1", TRACKBARS_NAME, &p1, 255);
     cvCreateTrackbar("p2", TRACKBARS_NAME, &p2, 255);

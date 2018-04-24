@@ -11,14 +11,17 @@ extern QUdpSocket *udpSocket;
 
 void processForward(cv::Mat &Frame, cv::Point &puckPoint, std::vector<cv::Point> &Points, int &averagexSpeed)
 {
+    //using namespace cv;
+
     Point predictedPoint;
     Point attackPoint;
     // Предсказываем, куда придёт шайба
 
     predictedPoint = predictPosition(Frame, Points, ENDLINE);
-    circle(Frame, predictedPoint, 20, Scalar(244,0,0),2);
+    circle(Frame, predictedPoint, 20, COLOR_ORANGE,2);
+    circle(Frame, predictedPoint, WORKING_DELTA, COLOR_YELLOW, 2);
     attackPoint = predictPosition(Frame, Points, ENDLINE-WORKING_DELTA);
-    circle(Frame, attackPoint, 20, Scalar(244,0,0),2);
+    circle(Frame, attackPoint, 20, COLOR_ORANGE,2);
 
     if (puckPoint.x < ENDLINE)
     {
@@ -57,6 +60,8 @@ void processForward(cv::Mat &Frame, cv::Point &puckPoint, std::vector<cv::Point>
 
 void processBackward(cv::Mat &Frame, std::vector<cv::Point> &Points, cv::Vec2i averageSpeed)
 {
+    //using namespace cv;
+
     Point predictedPoint;
     Point attackPoint;
     Point puckPoint = Points[Points.size()-1];
@@ -64,9 +69,9 @@ void processBackward(cv::Mat &Frame, std::vector<cv::Point> &Points, cv::Vec2i a
     int averageySpeed = averageSpeed[1];
 
     predictedPoint = predictPosition(Frame, Points, ENDLINE);//-WORKING_DELTA);
-    circle(Frame, predictedPoint, 20, Scalar(244,0,0),2);
+    circle(Frame, predictedPoint, 20, COLOR_ORANGE,2);
     attackPoint = predictPosition(Frame, Points, ENDLINE-WORKING_DELTA);
-    circle(Frame, attackPoint, 20, Scalar(244,0,0),2);
+    circle(Frame, attackPoint, 20, COLOR_ORANGE,2);
 
     // Шайба уходит от нас, но находится в нашей рабочей зоне
     if (in_Range(puckPoint.x, ENDLINE-WORKING_DELTA, ENDLINE))
@@ -112,6 +117,7 @@ void processBackward(cv::Mat &Frame, std::vector<cv::Point> &Points, cv::Vec2i a
 
 }
 
+
 int main()
 {
     udpSocket = new QUdpSocket();
@@ -120,8 +126,8 @@ int main()
     setupWindow();
     Mat Frame;
     Point puckPoint;
-    Point predictedPoint;
-    Point attackPoint;
+    //Point predictedPoint;
+    //Point attackPoint;
     vector<Point> Points;
     vector<int> Speedx;
     vector<int> Speedy;
@@ -129,7 +135,7 @@ int main()
     int averageySpeed;
     char key = -1;
     int skippedFrames = 0;
-
+    loadSettings();
     ownTimer frameCounter = ownTimer();
     while (true)
     {
@@ -158,11 +164,7 @@ int main()
                 Speedx = getSpeed(Points, 'x', averagexSpeed);
 
                 // Если направление изменилось
-                if (isDirectionChanged(Speedx))
-                {
-                    Points.clear();
-                }
-                if (isDirectionChanged(Speedy))
+                if (isDirectionChanged(Speedx) || isDirectionChanged(Speedy))
                 {
                     Points.clear();
                 }
@@ -202,19 +204,25 @@ int main()
         drawDebugLines(Frame);
         drawPath(Frame, Points);
         frameCounter.stop();
-        //String str;
-        //str. (1 / frameCounter.elapsed_seconds());
         putText(Frame, to_string(1 / frameCounter.elapsed_seconds()), Point(20,20), FONT_HERSHEY_COMPLEX, 1, Scalar(255,255,0), 2);
-        //std::cout << 1 / frameCounter.elapsed_seconds() << endl;
-
         imshow(WINDOW_NAME, Frame);
+
         key = waitKey(1);
-        switch (key) {
-        case 'q':
-            return 0;
+        switch (key)
+        {
+            case 'q':
+                return 0;
+                break;
+        case 's':
+        {
+            saveSettings();
             break;
-        case 'c':
+        }
+        case 'l':
+        {
+            loadSettings();
             break;
+        }
         default:
             break;
         }

@@ -20,7 +20,7 @@ cv::Vec2f getExtrapolationCoefficients(const std::vector<cv::Point> &Points, cv:
     b = (sumy - a*sumx)/n;
 
     ///DEBUG///
-    line(Frame, Point(0, a*0 + b), Point(1000, a*1000 + b), Scalar(255,0,255), 2);
+    line(Frame, Point(0, a*0 + b), Point(Frame.cols, a*Frame.cols + b), COLOR_MAGENTA, 2);
     ///END///
 
     return Vec2f(a, b);

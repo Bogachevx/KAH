@@ -8,12 +8,13 @@
 #include <opencv2/core.hpp>
 
 #include <iostream>
+#include <fstream>
 #include <math.h>
 
 #include "globals.h"
+#include "colors.h"
 #include "misc.h"
 #include "timer.h"
-
 
 
 #endif // OCVHEADERS_H

@@ -10,7 +10,9 @@ SOURCES += main.cpp \
     misc.cpp \
     globals.cpp \
     camera.cpp \
-    cvwindow.cpp
+    cvwindow.cpp \
+    fileio.cpp \
+    process.cpp
 
 INCLUDEPATH += C:\\opencv3_build\\install\\include
 
@@ -35,4 +37,7 @@ HEADERS += \
     misc.h \
     functions.h \
     camera.h \
-    cvwindow.h
+    cvwindow.h \
+    colors.h \
+    fileio.h \
+    process.h
