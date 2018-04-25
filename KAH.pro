@@ -12,7 +12,7 @@ SOURCES += main.cpp \
     camera.cpp \
     cvwindow.cpp \
     fileio.cpp \
-    process.cpp
+    puckprocess.cpp
 
 INCLUDEPATH += C:\\opencv3_build\\install\\include
 
@@ -40,4 +40,4 @@ HEADERS += \
     cvwindow.h \
     colors.h \
     fileio.h \
-    process.h
+    puckprocess.h

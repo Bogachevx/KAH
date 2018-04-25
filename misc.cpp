@@ -19,7 +19,8 @@ std::vector<int> getSpeed(std::vector<cv::Point> &Points, char coord, int &avera
             Speed.push_back(speed);
             averageSpeed += speed;
         }
-    } else if (coord == 'x')
+    }
+    else if (coord == 'x')
     {
         for (uint8_t i = 1; i < Points.size(); i++)
         {
@@ -94,4 +95,5 @@ void moveTo(const cv::Mat &frame, cv::Point p)
 
     UDPSend(package.toUtf8());
 }
+
 

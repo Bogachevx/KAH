@@ -29,6 +29,10 @@ void setupCamera(int cameraAddress, int Width, int Height)
 
 void getCameraFrame(cv::Mat &Frame)
 {
+    if (!camera->isOpened())
+    {
+        exit(-100);
+    }
     camera->read(Frame);
     cv::cvtColor(Frame, Frame, CV_BGR2GRAY);
 }
