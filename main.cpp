@@ -131,8 +131,8 @@ int main()
     vector<Point> Points;
     vector<int> Speedx;
     vector<int> Speedy;
-    int averagexSpeed;
-    int averageySpeed;
+    int averagexSpeed = 0;
+    int averageySpeed = 0;
     char key = -1;
     int skippedFrames = 0;
     loadSettings();
@@ -163,6 +163,7 @@ int main()
                 Speedy = getSpeed(Points, 'y' ,averageySpeed);
                 Speedx = getSpeed(Points, 'x', averagexSpeed);
 
+                //std::cout << averagexSpeed << " " << averageySpeed << std::endl;
                 // Если направление изменилось
                 if (isDirectionChanged(Speedx) || isDirectionChanged(Speedy))
                 {

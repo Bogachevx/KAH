@@ -8,7 +8,7 @@ bool in_Range(int x, int a, int b)
 //+
 std::vector<int> getSpeed(std::vector<cv::Point> &Points, char coord, int &averageSpeed)
 {
-    averageSpeed = 0;
+    int sumSpeed = 0;
     int speed;
     std::vector<int> Speed;
     if (coord == 'y')
@@ -17,7 +17,7 @@ std::vector<int> getSpeed(std::vector<cv::Point> &Points, char coord, int &avera
         {
             speed = Points[i].y - Points[i - 1].y;
             Speed.push_back(speed);
-            averageSpeed += speed;
+            sumSpeed += speed;
         }
     }
     else if (coord == 'x')
@@ -26,11 +26,10 @@ std::vector<int> getSpeed(std::vector<cv::Point> &Points, char coord, int &avera
         {
             speed = Points[i].x - Points[i - 1].x;
             Speed.push_back(speed);
-            averageSpeed += speed;
+            sumSpeed += speed;
         }
     }
-
-    averageSpeed = averageSpeed/Points.size();
+    averageSpeed = sumSpeed/(signed int)Speed.size();
     return Speed;
 }
 //+
