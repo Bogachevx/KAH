@@ -7,9 +7,9 @@ cv::Point findPuck(cv::Mat &Frame, int param1, int param2, int minRadius, int ma
     using namespace std;
 
     vector<Vec3f> circles;
-    HoughCircles(Frame, circles, CV_HOUGH_GRADIENT, 1, Frame.rows/2,
+    HoughCircles(Frame, circles, HOUGH_GRADIENT, 1, Frame.rows/2,
                 param1, param2, minRadius, maxRadius);
-    cvtColor(Frame, Frame, CV_GRAY2BGR);
+    cvtColor(Frame, Frame, COLOR_GRAY2RGB);
 
     if (circles.size() != 1)
     {

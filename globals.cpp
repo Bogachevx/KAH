@@ -6,6 +6,8 @@ int p2 = 26;
 int minRadius = 13;
 int maxRadius = 17;
 int kx = 10000;
+int winWidth = 1024;
+int winHeight = 544;
 
 int MINY = 62;
 int MAXY = 488;

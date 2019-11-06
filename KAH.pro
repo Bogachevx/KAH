@@ -14,18 +14,14 @@ SOURCES += main.cpp \
     fileio.cpp \
     puckprocess.cpp
 
-INCLUDEPATH += C:\\opencv3_build\\install\\include
+INCLUDEPATH += C:\\opencv\\include
 
-LIBS += C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_core341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_features2d341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_flann341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_highgui341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_objdetect341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_video341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_videoio341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_calib3d341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_imgproc341d.dll \
-C:\\opencv3_build\\install\\x86\\mingw\\bin\\libopencv_ml341d.dll \
+LIBS += C:\\opencv\\bin\\libopencv_core411.dll \
+C:\\opencv\\bin\\libopencv_highgui411.dll \
+C:\\opencv\\bin\\libopencv_objdetect411.dll \
+C:\\opencv\\bin\\libopencv_video411.dll \
+C:\\opencv\\bin\\libopencv_videoio411.dll \
+C:\\opencv\\bin\\libopencv_imgproc411.dll \
 
 HEADERS += \
     timer.h \

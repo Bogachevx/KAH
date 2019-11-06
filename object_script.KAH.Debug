@@ -1,0 +1,10 @@
+debug/main.o
+debug/findpuck.o
+debug/extrapolation.o
+debug/prediction.o
+debug/misc.o
+debug/globals.o
+debug/camera.o
+debug/cvwindow.o
+debug/fileio.o
+debug/puckprocess.o

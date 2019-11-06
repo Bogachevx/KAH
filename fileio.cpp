@@ -13,7 +13,9 @@ void saveSettings()
          << ENDLINE << std::endl
          << WORKING_DELTA << std::endl
          << GATE_DELTA << std::endl
-         << kx << std::endl;
+         << kx << std::endl
+         << winWidth << std::endl
+         << winHeight << std::endl;
     file.close();
     std::cout << "Settings saved!" << std::endl;
 }
@@ -30,7 +32,7 @@ void loadSettings()
     }
 
     file >> p1 >> p2 >> minRadius >> maxRadius >> MINY >> MAXY >> ENDLINE
-            >> WORKING_DELTA >> GATE_DELTA >> kx;
+            >> WORKING_DELTA >> GATE_DELTA >> kx >> winWidth >> winHeight;
     file.close();
     cv::destroyWindow(TRACKBARS_NAME);
     setupTrackbars();

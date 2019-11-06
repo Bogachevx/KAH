@@ -20,9 +20,9 @@ void setupCamera(int cameraAddress, int Width, int Height)
         std::cout << "Error opening camera!" << std::endl;
         exit(-1);
     }
-    camera->set(CV_CAP_PROP_FRAME_WIDTH, Width);
-    camera->set(CV_CAP_PROP_FRAME_HEIGHT, Height);
-    camera->set(CV_CAP_PROP_FPS, 90);
+    camera->set(cv::CAP_PROP_FRAME_WIDTH, Width);
+    camera->set(cv::CAP_PROP_FRAME_HEIGHT, Height);
+    camera->set(cv::CAP_PROP_FPS, 90);
 
     skipFrames(0);
 }
@@ -34,5 +34,5 @@ void getCameraFrame(cv::Mat &Frame)
         exit(-100);
     }
     camera->read(Frame);
-    cv::cvtColor(Frame, Frame, CV_BGR2GRAY);
+    cv::cvtColor(Frame, Frame, cv::COLOR_BGR2GRAY);
 }

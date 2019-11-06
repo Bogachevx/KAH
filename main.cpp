@@ -1,129 +1,23 @@
 #include "headers.h"
 #include "functions.h"
+#include <QDateTime>
 #include "puckprocess.h"
 using namespace std;
 using namespace cv;
 
-extern int p1, p2, minRadius, maxRadius, kx, MINY, MAXY, ENDLINE, WORKING_DELTA, GATE_DELTA;
+extern int p1, p2, minRadius, maxRadius, kx, MINY, MAXY, ENDLINE, WORKING_DELTA, GATE_DELTA, winWidth, winHeight;
 
 extern VideoCapture *camera;
 extern QUdpSocket *udpSocket;
-/*
-void processForward(cv::Mat &Frame, cv::Point &puckPoint, std::vector<cv::Point> &Points, int &averagexSpeed)
-{
-    using namespace cv;
 
-    Point predictedPoint;
-    Point attackPoint;
-    // Предсказываем, куда придёт шайба
-
-    predictedPoint = predictPosition(Frame, Points, ENDLINE);
-    circle(Frame, predictedPoint, 20, COLOR_ORANGE,2);
-    circle(Frame, predictedPoint, WORKING_DELTA, COLOR_YELLOW, 2);
-    attackPoint = predictPosition(Frame, Points, ENDLINE-WORKING_DELTA);
-    circle(Frame, attackPoint, 20, COLOR_ORANGE,2);
-
-    if (puckPoint.x < ENDLINE)
-    {
-        // Шайба не в рабочей зоне
-        if (!in_Range(puckPoint.x, ENDLINE-WORKING_DELTA - kx*averagexSpeed/1000, ENDLINE))
-        {
-            // Если шайба попадает в зону отбития
-            if (in_Range(predictedPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-            {
-                // Идём в неё
-                moveTo(Frame, predictedPoint);
-            }
-            else
-            {
-                moveTo(Frame, HOMEPOINT);
-            }
-        }
-        else
-        {
-            if (in_Range(attackPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-            {
-                // Идём в неё
-                if (in_Range(predictedPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-                {
-                    moveTo(Frame, attackPoint);
-                }
-            }
-        }
-    }
-    else
-    {
-        moveTo(Frame, Point(ENDLINE, MAXY));
-        moveTo(Frame, HOMEPOINT);
-    }
-}
-
-void processBackward(cv::Mat &Frame, std::vector<cv::Point> &Points, cv::Vec2i averageSpeed)
-{
-    using namespace cv;
-
-    Point predictedPoint;
-    Point attackPoint;
-    Point puckPoint = Points[Points.size()-1];
-    int averagexSpeed = averageSpeed[0];
-    int averageySpeed = averageSpeed[1];
-
-    predictedPoint = predictPosition(Frame, Points, ENDLINE);//-WORKING_DELTA);
-    circle(Frame, predictedPoint, 20, COLOR_ORANGE,2);
-    attackPoint = predictPosition(Frame, Points, ENDLINE-WORKING_DELTA);
-    circle(Frame, attackPoint, 20, COLOR_ORANGE,2);
-
-    // Шайба уходит от нас, но находится в нашей рабочей зоне
-    if (in_Range(puckPoint.x, ENDLINE-WORKING_DELTA, ENDLINE))
-    {
-        // Если почти стоит
-        if (averagexSpeed < 5 && averageySpeed < 5)
-        {
-            if (in_Range(puckPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-            {
-                moveTo(Frame, puckPoint);
-            }
-        }
-        if (Points.size() > 2)
-        {
-
-            if (in_Range(puckPoint.x, ENDLINE-WORKING_DELTA/2, ENDLINE))
-            {
-                if (in_Range(attackPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-                {
-                    if (in_Range(predictedPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-                    {
-                        moveTo(Frame, predictedPoint);
-                    }
-                }
-            }
-            else
-            {
-                if (in_Range(attackPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-                {
-                    if (in_Range(predictedPoint.y, Frame.rows/2 - GATE_DELTA, Frame.rows/2 + GATE_DELTA))
-                    {
-                        moveTo(Frame, attackPoint);
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        moveTo(Frame, HOMEPOINT);
-        Points.clear();
-    }
-
-}
-
-*/
 int main()
 {
     udpSocket = new QUdpSocket();
-
-    setupCamera(0, 1024, 544);
     setupWindow();
+    loadSettings();
+    setupCamera(0, winWidth, winHeight);
+
+
     Mat Frame;
     Point puckPoint;
     //Point predictedPoint;
@@ -135,14 +29,29 @@ int main()
     int averageySpeed = 0;
     char key = -1;
     int skippedFrames = 0;
-    loadSettings();
+    bool isrec = false;
     ownTimer frameCounter = ownTimer();
+
+    QString clearFname = "file1";//QDateTime::currentDateTime().toString("ddMMyyyyhhmmss");
+    QString procFname = "file2";//clearFname;
+    clearFname.append("_c.avi");
+    procFname.append("_p.avi");
+    int ex = static_cast<int>(camera->get(CAP_PROP_FOURCC));
+    Size S = Size(camera->get(CAP_PROP_FRAME_WIDTH), camera->get(CAP_PROP_FRAME_HEIGHT));
+    VideoWriter cleanOutput = VideoWriter(clearFname.toStdString(), -1, camera->get(CAP_PROP_FPS), S, false);
+    //cleanOutput.open;
+    VideoWriter procOutput;
+    procOutput.open(procFname.toStdString(), ex, camera->get(CAP_PROP_FPS), S);
+
     while (true)
     {
         frameCounter.start();
         //Получаем очередной кадр
         getCameraFrame(Frame);
-
+        if (isrec)
+        {
+            cleanOutput << Frame;
+        }
         //Определяем координаты центра шайбы
         puckPoint = findPuck(Frame, p1, p2, minRadius, maxRadius);
 
@@ -205,13 +114,29 @@ int main()
         drawDebugLines(Frame);
         drawPath(Frame, Points);
         frameCounter.stop();
-        putText(Frame, to_string(int(1 / frameCounter.elapsed_seconds())), Point(20,20), FONT_HERSHEY_COMPLEX, 1, Scalar(255,255,0), 2);
+        Scalar color;
+        if (isrec)
+        {
+            color=Scalar(0,0,255);
+        }
+        else
+        {
+            color=Scalar(255,0,0);
+        }
+        putText(Frame, to_string(int(1 / frameCounter.elapsed_seconds())), Point(20,20), FONT_HERSHEY_COMPLEX, 1, color, 2);
+        if (isrec)
+        {
+            procOutput.write(Frame);
+        }
         imshow(WINDOW_NAME, Frame);
 
         key = waitKey(1);
         switch (key)
         {
             case 'q':
+                //saveSettings();
+                cleanOutput.release();
+                procOutput.release();
                 return 0;
                 break;
         case 's':
@@ -224,6 +149,9 @@ int main()
             loadSettings();
             break;
         }
+        case 'r':
+            isrec = !isrec;
+            break;
         default:
             break;
         }

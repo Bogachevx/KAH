@@ -25,21 +25,21 @@ void drawDebugLines(cv::Mat &Frame)
 
 void setupWindow()
 {
-    cvNamedWindow(WINDOW_NAME, CV_WINDOW_AUTOSIZE);
-    cvNamedWindow(TRACKBARS_NAME, CV_WINDOW_FREERATIO);
+    cv::namedWindow(WINDOW_NAME, cv::WINDOW_AUTOSIZE);
+    cv::namedWindow(TRACKBARS_NAME, cv::WINDOW_FREERATIO);
 }
 
 void setupTrackbars()
 {
-    cvNamedWindow(TRACKBARS_NAME, CV_WINDOW_FREERATIO);
-    cvCreateTrackbar("p1", TRACKBARS_NAME, &p1, 255);
-    cvCreateTrackbar("p2", TRACKBARS_NAME, &p2, 255);
-    cvCreateTrackbar("min", TRACKBARS_NAME, &minRadius, 500);
-    cvCreateTrackbar("max", TRACKBARS_NAME, &maxRadius, 500);
-    cvCreateTrackbar("MINY", TRACKBARS_NAME, &MINY, 100);
-    cvCreateTrackbar("MAXY", TRACKBARS_NAME, &MAXY, 600);
-    cvCreateTrackbar("ENDLINE", TRACKBARS_NAME, &ENDLINE, 1024);
-    cvCreateTrackbar("WORKING_DELTA", TRACKBARS_NAME, &WORKING_DELTA, 1024);
-    cvCreateTrackbar("GATE_DELTA", TRACKBARS_NAME, &GATE_DELTA, 1024);
-    cvCreateTrackbar("kx", TRACKBARS_NAME, &kx, 40000);
+    cv::namedWindow(TRACKBARS_NAME, cv::WINDOW_FREERATIO);
+    cv::createTrackbar("p1", TRACKBARS_NAME, &p1, 255);
+    cv::createTrackbar("p2", TRACKBARS_NAME, &p2, 255);
+    cv::createTrackbar("min", TRACKBARS_NAME, &minRadius, 500);
+    cv::createTrackbar("max", TRACKBARS_NAME, &maxRadius, 500);
+    cv::createTrackbar("MINY", TRACKBARS_NAME, &MINY, 100);
+    cv::createTrackbar("MAXY", TRACKBARS_NAME, &MAXY, 600);
+    cv::createTrackbar("ENDLINE", TRACKBARS_NAME, &ENDLINE, 1024);
+    cv::createTrackbar("WORKING_DELTA", TRACKBARS_NAME, &WORKING_DELTA, 1024);
+    cv::createTrackbar("GATE_DELTA", TRACKBARS_NAME, &GATE_DELTA, 1024);
+    cv::createTrackbar("kx", TRACKBARS_NAME, &kx, 40000);
 }
